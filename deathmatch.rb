@@ -71,7 +71,9 @@ class World
   end
 
   def new_rocket(player, direction)
+    return if player.cooldown?
     r = Rocket.new(player, direction)
+    player.fire
     @rockets.push(r)
     r
   end
@@ -101,8 +103,8 @@ class World
       @rockets.each do |r|
         if r.collide? p
           dir = (r.position - p.position) * -1.0
-          p.move(dir)
-          p.take_damage
+          p.knocked(dir)
+          p.take_damage(r)
           remove_rocket r
         end
       end
@@ -140,10 +142,11 @@ class World
 end
 
 class Player
-  attr_reader :name, :position, :dead, :health
+  attr_reader :position, :dead, :health
+  attr_accessor :name
 
-  MAX_SPEED = 200.0
-  ACCELRATION = 10.0
+  MAX_SPEED = 300.0
+  ACCELRATION = 80.0
 
   def initialize
     @@n ||= 0
@@ -151,6 +154,7 @@ class Player
     @id = (@@n += 1)
     @name = "Player #{@id.to_s}"
     @velocity = Vector.new(rand(50).to_f - 25, rand(50).to_f - 25)
+    @cooldown = 0
     spawn
   end
 
@@ -169,27 +173,45 @@ class Player
     @position += (@velocity * 0.01)
   end
 
-  def take_damage
-    @health -= 10
-    die if @health <= 0
+  def knocked(direction)
+    @velocity += (direction.normalise * 200)
   end
 
-  def die
+  def take_damage(rocket)
+    @health -= 10
+    die(rocket.owner) if @health <= 0
+  end
+
+  def die(killer)
     @dead = true
-    @countdown = (rand(3) + 1).to_f
+    @respawn = 2.to_f
+    killer.boost
+  end
+
+  def boost
+    return if @dead
+    rem = (100.0 - @health)
+    @health += rem / 2.0
   end
 
   def circle
     Circle.new(@position, 20)
   end
 
+  def fire
+    @cooldown = 5
+  end
+
+  def cooldown?
+    @cooldown > 0
+  end
 
   def tick(dt)
     if @dead
-      @countdown -= dt
-      if @countdown <= 0
+      if @respawn <= 0
         spawn
       end
+      @respawn -= dt
       return
     end
 
@@ -198,6 +220,8 @@ class Player
     end
     @velocity *= 0.96
     @position += @velocity * dt
+
+    @cooldown -= 1
   end
 
   def to_h(you=nil)
@@ -207,14 +231,15 @@ class Player
       pos: {x: @position.x, y: @position.y},
       dead: @dead,
       health: @health,
+      respawn: @respawn,
     }
   end
 end
 
 class Rocket
-  attr_reader :position
+  attr_reader :position, :owner
 
-  ROCKET_SPEED = 400.0
+  ROCKET_SPEED = 600.0
 
   def initialize(owner, direction)
     @owner = owner
@@ -303,6 +328,8 @@ EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
       when 'shoot'
         direction = Vector.new(command['x'], command['y']) - player.position
         $world.new_rocket(player, direction)
+      when 'name'
+        player.name = command['name']
       end
     end
   end
