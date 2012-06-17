@@ -69,6 +69,9 @@ class World
 
       Line.new(Vector.new(200, 200), Vector.new(200, 400)),
       Line.new(Vector.new(200, 400), Vector.new(400, 400)),
+
+      Line.new(Vector.new(400, 200), Vector.new(550, 200)),
+      Line.new(Vector.new(550, 200), Vector.new(550, 350)),
       # wall(5, 4, 5, 10),
       # wall(5, 4, 5, 10),
       # wall(5, 4, 5, 10),
