@@ -1,6 +1,11 @@
 Deathmatch
 ====
 
+Dependencies
+----
+
+gem install eventmachine
+gem install em-websocket
 
 To start
 ----
