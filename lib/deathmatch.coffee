@@ -143,10 +143,6 @@ drawStuff = ->
 
 
     if player.you
-      ctx.textAlign = 'center'
-      ctx.font = '12px Helvetica, Arial, sans-serif'
-      ctx.fillStyle = 'rgba(0,0,0,0.4)'
-      ctx.fillText("Score: #{player.score}", 700, 550)
       if player.dead
         ctx.textAlign = 'center'
         ctx.font = '32px Helvetica, Arial, sans-serif'
@@ -157,7 +153,7 @@ drawStuff = ->
 
     ctx.textAlign = 'left'
     ctx.font = '12px Helvetica, Arial, sans-serif'
-    ctx.fillStyle = 'rgba(0,0,0,0.4)'
+    ctx.fillStyle = if player.you then 'rgba(200,0,0,0.4)'  else 'rgba(0,0,0,0.4)'
     ctx.fillText("#{player.name}:", leaderboard_pos[0], leaderboard_pos[1])
     ctx.textAlign = 'right'
     ctx.fillText("#{player.score}", leaderboard_pos[0]+125, leaderboard_pos[1])
