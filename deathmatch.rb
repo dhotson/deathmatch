@@ -204,11 +204,10 @@ class Player
     normal = (wall.b - wall.a).normal
     direction = @velocity.projection(normal) * -2.0
     @velocity += direction
-    @position += @velocity * 0.02
   end
 
-  def knocked(direction)
-    @velocity += (direction.normalise * 200)
+  def knocked(direction, force=200.0)
+    @velocity += (direction.normalise * force)
   end
 
   def crown!
@@ -275,18 +274,30 @@ class Player
     new_circle = Circle.new(new_position, 25)
 
     collisions = @world.walls.map do |w|
+      c = false
       if new_circle.collide?(w)
         reflect(w)
+        c = true
       end
-      new_circle.collide?(w)
+
+      dir = (new_position - w.a)
+      if dir.magnitude < 20
+        knocked(dir, 600)
+        c = true
+      end
+
+      dir = (new_position - w.b)
+      if dir.magnitude < 20
+        knocked(dir, 600)
+        c = true
+      end
+
+      c
     end
 
     if collisions.none?
       @position = new_position
     end
-
-
-    # @position += @velocity * dt
 
     @cooldown -= 1
   end
