@@ -27,18 +27,25 @@ window.addEventListener 'mousemove', (event) ->
   crosshair.x = event.clientX
   crosshair.y = event.clientY
 
+keyIgnorer = (event) ->
+  if event.keyCode in [37..40]
+    event.preventDefault()
 
 window.addEventListener 'keydown', (event) ->
-  if event.keyCode == 87 then up = true
-  if event.keyCode == 83 then down = true
-  if event.keyCode == 65 then left = true
-  if event.keyCode == 68 then right = true
+  keyIgnorer(event)
+  kc = event.keyCode
+  if kc in [87, 38, 75] then up = true
+  if kc in [83, 40, 74] then down = true
+  if kc in [65, 37, 72] then left = true
+  if kc in [68, 39, 76] then right = true
 
 window.addEventListener 'keyup', (event) ->
-  if event.keyCode == 87 then up = false
-  if event.keyCode == 83 then down = false
-  if event.keyCode == 65 then left = false
-  if event.keyCode == 68 then right = false
+  keyIgnorer(event)
+  kc = event.keyCode
+  if kc in [87, 38, 75] then up = false
+  if kc in [83, 40, 74] then down = false
+  if kc in [65, 37, 72] then left = false
+  if kc in [68, 39, 76] then right = false
 
 window.addEventListener 'mousedown', (event) ->
   ws.send(JSON.stringify({
