@@ -15,7 +15,7 @@ ctx = canvas.getContext '2d'
 
 window.Game = {}
 
-Game.ws = ws = new WebSocket "ws://10.0.1.142:8080"
+Game.ws = ws = new WebSocket "ws://#{window.location.hostname}:8080"
 
 up = false
 down = false
@@ -163,7 +163,7 @@ webkitRequestAnimationFrame(drawStuff)
 
 ws.onclose = ->
   intervalId = window.setInterval((->
-    Game.ws = ws = new WebSocket "ws://10.0.1.142:8080"
+    Game.ws = ws = new WebSocket "ws://#{window.location.hostname}:8080"
     ws.onmessage = (evt) ->
       Game.world = world = JSON.parse(evt.data)
     window.clearInterval(intervalId)
