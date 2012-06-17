@@ -255,7 +255,7 @@ class Player
   end
 
   def fire
-    @cooldown = 5
+    @cooldown = 8
   end
 
   def cooldown?
