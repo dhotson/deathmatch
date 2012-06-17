@@ -349,56 +349,61 @@ $world = World.new
 
 dt = 1.0 / 60.0
 
-timer = false
-
-EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
-
-  timer ||= EventMachine::PeriodicTimer.new(dt) do
+EventMachine.run do
+  world_ticker = proc {
     $world.tick(dt)
-  end
+    EventMachine::add_timer dt, world_ticker
+  }
 
-  crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
-    if not $world.players.map(&:crowned?).any?
-      $world.players.sample.crown!
-    end
-  end
+  world_ticker.call
 
-  player = $world.new_player
+  EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
 
-  ws.onopen do
-    EventMachine::PeriodicTimer.new(dt) do
-      ws.send $world.to_json(player)
-    end
-  end
-
-
-  ws.onmessage do |msg|
-    if !player.dead
-      command = JSON.load(msg)
-
-      case command['type']
-      when 'move'
-        keys = command['keys']
-        keys.each do |key|
-          dir = ({
-            'up' => Vector.new(0, -1),
-            'down' => Vector.new(0, 1),
-            'left' => Vector.new(-1, 0),
-            'right' => Vector.new(1, 0),
-          })[key]
-
-          player.move(Vector.new(dir.x, dir.y))
-        end
-      when 'shoot'
-        direction = Vector.new(command['x'], command['y']) - player.position
-        $world.new_rocket(player, direction)
-      when 'name'
-        player.name = command['name']
+    crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
+      if not $world.players.map(&:crowned?).any?
+        $world.players.sample.crown!
       end
     end
-  end
 
-  ws.onclose do
-    $world.remove_player(player)
+    player = $world.new_player
+
+    ws.onopen do
+      world_sender = proc{
+        ws.send $world.to_json(player)
+        EventMachine::add_timer 0.00016, world_sender
+      }
+
+      world_sender.call
+    end
+
+    ws.onmessage do |msg|
+      if !player.dead
+        command = JSON.load(msg)
+
+        case command['type']
+        when 'move'
+          keys = command['keys']
+          keys.each do |key|
+            dir = ({
+              'up' => Vector.new(0, -1),
+              'down' => Vector.new(0, 1),
+              'left' => Vector.new(-1, 0),
+              'right' => Vector.new(1, 0),
+            })[key]
+
+            player.move(Vector.new(dir.x, dir.y))
+          end
+        when 'shoot'
+          direction = Vector.new(command['x'], command['y']) - player.position
+          $world.new_rocket(player, direction)
+        when 'name'
+          player.name = command['name']
+        end
+      end
+    end
+
+    ws.onclose do
+      $world.remove_player(player)
+    end
   end
 end
