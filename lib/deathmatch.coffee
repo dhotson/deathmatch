@@ -8,7 +8,7 @@ canvas = document.getElementById 'canvas'
 
 canvas.width = 800 # document.width
 canvas.height = 600 # document.height
-canvas.style.backgroundColor = '#EEEEEE'
+canvas.style.background = '#EEEEEE url(assets/white_brick_wall.png) repeat top left'
 canvas.style.cursor = 'none'
 
 ctx = canvas.getContext '2d'
