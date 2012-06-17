@@ -48,6 +48,8 @@ window.addEventListener 'keyup', (event) ->
   if kc in [68, 39, 76] then right = false
 
 window.addEventListener 'mousedown', (event) ->
+  # play("pew#{Math.ceil(Math.random() * 5)}.mp3")
+  play("spawn.wav")
   ws.send(JSON.stringify({
     type: 'shoot',
     x: event.clientX,
@@ -72,6 +74,13 @@ ws.onmessage = (evt) ->
   Game.world = world = JSON.parse(evt.data)
 
 Game.drawCallbacks = []
+
+play = (sound)->
+  a = new Audio("assets/snd/" + sound)
+  a.play()
+
+
+deadSound = _.throttle((-> play("die.wav")), 8000)
 
 drawStuff = ->
   keys = []
@@ -152,6 +161,8 @@ drawStuff = ->
         ctx.fillStyle = 'rgba(200,0,0,0.4)'
         ctx.fillText("Killed by #{player.killer_name}", 400, 350)
 
+        deadSound()
+
     ctx.textAlign = 'left'
     ctx.font = '12px Helvetica, Arial, sans-serif'
     ctx.fillStyle = if player.you then 'rgba(200,0,0,0.4)'  else 'rgba(0,0,0,0.4)'
@@ -195,3 +206,4 @@ ws.onopen = ->
     name: name
   }))
 
+play("win/#{Math.floor(Math.random() * 11)}.wav")
