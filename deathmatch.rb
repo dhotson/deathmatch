@@ -179,6 +179,7 @@ class Player
     @killer_name = ""
     @score = 0
     @consecutive_kills = 0
+    @crowned = false
     spawn
   end
 
@@ -203,6 +204,14 @@ class Player
     @velocity += (direction.normalise * 200)
   end
 
+  def crown!
+    @crowned = true
+  end
+
+  def crowned?
+    !!@crowned
+  end
+
   def take_damage(rocket)
     @health -= 10
     die(rocket.owner) if @health <= 0
@@ -215,6 +224,11 @@ class Player
     @killer_name = killer.name
     @score  -= 1
     killer.boost
+
+    if @crowned
+      killer.crown!
+      @crowned = false
+    end
   end
 
   def boost
@@ -264,6 +278,7 @@ class Player
       respawn: @respawn,
       killer_name: @killer_name,
       score: @score,
+      crowned: @crowned,
     }
   end
 end
@@ -340,6 +355,12 @@ EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
 
   timer ||= EventMachine::PeriodicTimer.new(dt) do
     $world.tick(dt)
+  end
+
+  crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
+    if not $world.players.map(&:crowned?).any?
+      $world.players.sample.crown!
+    end
   end
 
   player = $world.new_player

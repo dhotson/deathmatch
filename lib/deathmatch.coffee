@@ -138,7 +138,7 @@ drawStuff = ->
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
     ctx.font = '12px Helvetica, Arial, sans-serif'
-    ctx.fillStyle = 'rgba(0,0,0,0.5)'
+    ctx.fillStyle = if player.crowned then 'rgba(128,128,0,0.8)' else 'rgba(0,0,0,0.5)'
     ctx.fillText(player.name, player.pos.x, player.pos.y - 30)
 
 
