@@ -285,7 +285,7 @@ class Player
       id: @id,
       name: @name,
       you: (self === you),
-      pos: {x: @position.x, y: @position.y},
+      pos: {x: @position.x.round(3), y: @position.y.round(3)},
       dead: @dead,
       health: @health,
       respawn: @respawn,
@@ -322,7 +322,7 @@ class Rocket
 
   def to_h
     {
-      pos: {x: @position.x, y: @position.y},
+      pos: {x: @position.x.round(3), y: @position.y.round(3)},
     }
   end
 end
