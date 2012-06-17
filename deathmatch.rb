@@ -273,6 +273,7 @@ class Player
 
   def to_h(you=nil)
     {
+      id: @id,
       name: @name,
       you: (self === you),
       pos: {x: @position.x, y: @position.y},
