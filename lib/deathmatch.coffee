@@ -112,11 +112,11 @@ drawStuff = ->
     ctx.stroke()
 
     if player.you
-      ctx.fillStyle = if player.dead then 'rgba(255,0,0, 0.2)' else 'rgb(255,0,0)'
-      ctx.strokeStyle = if player.dead then 'rgba(0,0,0, 0.2)' else 'rgb(0,0,0)'
+      ctx.fillStyle = 'rgb(255,0,0)'
+      ctx.strokeStyle = 'rgb(0,0,0)'
     else
-      ctx.fillStyle = if player.dead then 'rgba(0,0,255, 0.2)' else 'rgb(0,0,255)'
-      ctx.strokeStyle = if player.dead then 'rgba(0,0,0, 0.2)' else 'rgb(0,0,0)'
+      ctx.fillStyle = 'rgb(0,0,255)'
+      ctx.strokeStyle = 'rgb(0,0,0)'
 
     if !player.dead
       health = player.health / 100.0
