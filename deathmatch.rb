@@ -193,7 +193,18 @@ class Player
   def spawn
     @dead = false
     @health = 100
+
     @position = Vector.new(rand(700).to_f + 50, rand(500).to_f + 50)
+    while on_wall?
+      @position = Vector.new(rand(700).to_f + 50, rand(500).to_f + 50)
+    end
+  end
+
+  def on_wall?
+    @world.walls.each do |w|
+      return true if circle.collide?(w)
+    end
+    return false
   end
 
   def move(direction)
