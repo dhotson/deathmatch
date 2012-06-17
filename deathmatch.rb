@@ -68,6 +68,7 @@ class World
       Line.new(Vector.new(10, 590), Vector.new(790, 590)),
       Line.new(Vector.new(10, 10), Vector.new(790, 10)),
       Line.new(Vector.new(790, 10), Vector.new(790, 590)),
+      # Line.new(Vector.new(100, 100), Vector.new(200, 200)),
 
       Line.new(Vector.new(200, 200), Vector.new(200, 400)),
       Line.new(Vector.new(200, 400), Vector.new(400, 400)),
@@ -164,7 +165,7 @@ class World
     {
       players: @players.map { |p| p.to_h(player) },
       rockets: @rockets.map { |r| r.to_h },
-      walls: @walls.map { |w| w.to_rect },
+      walls: @walls.map { |w| w.to_h },
     }
   end
 
@@ -328,29 +329,9 @@ class Rocket
 end
 
 class Line < Struct.new(:a, :b)
-  @@width = 6
   def to_h
     { a: a.to_h, b: b.to_h }
   end
-
-  def to_rect
-    _a, _b = a.to_h, b.to_h
-    if _a[:x] == _b[:x]
-      _a[:x] -= w_adj
-      _b[:x] += w_adj
-    end
-    if _a[:y] == _b[:y]
-      _a[:y] -= w_adj
-      _b[:y] += w_adj
-    end
-
-    { a: _a, b: _b}
-  end
-
-  def w_adj
-    (@width || @@width) / 2
-  end
-
 end
 
 class Circle < Struct.new(:position, :radius)
