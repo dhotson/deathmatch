@@ -58,7 +58,7 @@ class Vector
 end
 
 class World
-  attr_reader :players, :rockets
+  attr_reader :players, :rockets, :walls
   def initialize
     @players = []
     @rockets = []
@@ -84,7 +84,7 @@ class World
   end
 
   def new_player
-    p = Player.new
+    p = Player.new(self)
     @players.push(p)
     p
   end
@@ -175,7 +175,8 @@ class Player
   ACCELRATION = 80.0
   DAMPING = 0.96
 
-  def initialize
+  def initialize(world)
+    @world = world
     @@n ||= 0
     @dead = false
     @id = (@@n += 1)
@@ -269,7 +270,23 @@ class Player
       @velocity = @velocity.normalise * MAX_SPEED
     end
     @velocity *= DAMPING
-    @position += @velocity * dt
+
+    new_position = @position + @velocity * dt
+    new_circle = Circle.new(new_position, 25)
+
+    collisions = @world.walls.map do |w|
+      if new_circle.collide?(w)
+        reflect(w)
+      end
+      new_circle.collide?(w)
+    end
+
+    if collisions.none?
+      @position = new_position
+    end
+
+
+    # @position += @velocity * dt
 
     @cooldown -= 1
   end
