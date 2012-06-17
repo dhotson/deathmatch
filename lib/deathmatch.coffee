@@ -93,7 +93,15 @@ drawStuff = ->
     ctx.fill()
     ctx.stroke()
 
-  for player in world.players
+  players = world.players.sort (a,b) ->
+    if a.score == b.score
+      if a.name >= b.name then 1 else -1
+    else
+      if a.score < b.score then 1 else -1
+
+  leaderboard_pos = [650, 40]
+
+  for player in players
 
     ctx.fillStyle = if player.dead then 'rgba(255,255,255,0.2)' else '#FFFFFF'
     ctx.strokeStyle = if player.dead then 'rgba(0,0,0,0.2)' else '#000000'
@@ -147,6 +155,13 @@ drawStuff = ->
         ctx.fillText("Respawn in #{respawn}", 400, 300)
         ctx.fillText("Killed by #{player.killer_name}", 400, 350)
 
+    ctx.textAlign = 'left'
+    ctx.font = '12px Helvetica, Arial, sans-serif'
+    ctx.fillStyle = 'rgba(0,0,0,0.4)'
+    ctx.fillText("#{player.name}:", leaderboard_pos[0], leaderboard_pos[1])
+    ctx.textAlign = 'right'
+    ctx.fillText("#{player.score}", leaderboard_pos[0]+125, leaderboard_pos[1])
+    leaderboard_pos[1] += 20
 
 
   for wall in world.walls
