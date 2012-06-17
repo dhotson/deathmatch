@@ -392,7 +392,7 @@ EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
 
   crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
     if not $world.players.map(&:crowned?).any?
-      $world.players.sample.crown!
+      $world.players.sample.crown! unless $world.players.empty?
     end
   end
 
