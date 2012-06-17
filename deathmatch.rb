@@ -1,6 +1,9 @@
 require 'em-websocket'
 require 'json'
 
+WIDTH = 800
+HEIGHT = 600
+
 class Vector
   attr_reader :x, :y
 
@@ -138,6 +141,13 @@ class World
         if p.circle.collide?(w)
           p.reflect(w)
         end
+      end
+    end
+
+    @players.each do |p|
+      pos = p.position
+      if pos.x < 0 || pos.y < 0 || pos.x > WIDTH || pos.y > HEIGHT
+        p.spawn
       end
     end
 
