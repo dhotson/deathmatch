@@ -173,7 +173,8 @@ drawStuff = ->
 
 
   for wall in world.walls
-    ctx.lineWidth = 5
+    ctx.lineWidth = 8
+    ctx.lineCap = "round"
     ctx.strokeStyle = '#000000'
     ctx.beginPath()
     ctx.moveTo(wall.a.x, wall.a.y)
