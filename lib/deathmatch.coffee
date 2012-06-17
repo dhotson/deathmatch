@@ -22,17 +22,6 @@ down = false
 left = false
 right = false
 
-wallImg = new Image()
-wallImg.onload = ->
-  this.render()
-wallImg.render = ->
-  wallPtrn = ctx.createPattern(wallImg, 'repeat')
-  ctx.fillStyle = wallPtrn
-  for wall in Game.world.walls
-    ctx.fillRect(wall.a.x, wall.a.y, (wall.b.x-wall.a.x), (wall.b.y-wall.a.y))
-
-wallImg.src = 'assets/dark_brick_wall.png'
-
 crosshair = { x: 0, y: 0 }
 window.addEventListener 'mousemove', (event) ->
   crosshair.x = event.clientX
@@ -121,7 +110,6 @@ drawStuff = ->
 
   leaderboard_pos = [650, 40]
 
-  wallImg.render()
   for player in players
 
     ctx.fillStyle = if player.dead then 'rgba(255,255,255,0.2)' else '#FFFFFF'
@@ -183,6 +171,14 @@ drawStuff = ->
     ctx.fillText("#{player.score}", leaderboard_pos[0]+125, leaderboard_pos[1])
     leaderboard_pos[1] += 20
 
+
+  for wall in world.walls
+    ctx.lineWidth = 5
+    ctx.strokeStyle = '#000000'
+    ctx.beginPath()
+    ctx.moveTo(wall.a.x, wall.a.y)
+    ctx.lineTo(wall.b.x, wall.b.y)
+    ctx.stroke()
 
   ctx.fillStyle = 'rgba(0,160,0,0.6)'
   ctx.beginPath()
