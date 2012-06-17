@@ -272,7 +272,7 @@ class Rocket
 
   def initialize(owner, direction)
     @owner = owner
-    @position = owner.position + (direction.normalise * 25)
+    @position = owner.position + (direction.normalise * 20)
     @velocity = direction.normalise * ROCKET_SPEED
   end
 
@@ -286,7 +286,7 @@ class Rocket
   end
 
   def circle
-    Circle.new(@position, 10)
+    Circle.new(@position, 13)
   end
 
   def to_h
