@@ -33,6 +33,18 @@ class Vector
     self / magnitude
   end
 
+  def normal
+    self.class.new(-@y, @x)
+  end
+
+  def dot(other)
+    self.x * other.x + self.y * other.y
+  end
+
+  def projection(other)
+    other.normalise * self.dot(other.normalise)
+  end
+
   def to_h
     { x: @x, y: @y }
   end
@@ -94,8 +106,8 @@ class World
 
       r.tick(dt)
     end
-    @players.each { |p| p.tick(dt) }
     check_collisions
+    @players.each { |p| p.tick(dt) }
   end
 
   def check_collisions
@@ -113,7 +125,7 @@ class World
     @players.each do |p|
       @walls.each do |w|
         if p.circle.collide?(w)
-          p.reverse
+          p.reflect(w)
         end
       end
     end
@@ -168,9 +180,11 @@ class Player
     @velocity += direction.normalise * ACCELRATION
   end
 
-  def reverse
-    @velocity *= -2.0
-    @position += (@velocity * 0.01)
+  def reflect(wall)
+    normal = (wall.b - wall.a).normal
+    direction = @velocity.projection(normal) * -2.0
+    @velocity += direction
+    @position += @velocity * 0.01
   end
 
   def knocked(direction)
