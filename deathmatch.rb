@@ -285,30 +285,25 @@ class Player
     new_circle = Circle.new(new_position, 25)
 
     collisions = @world.walls.map do |w|
-      c = false
       if new_circle.collide?(w)
         reflect(w)
-        c = true
+        new_position = @position + @velocity * dt
       end
 
       dir = (new_position - w.a)
       if dir.magnitude < 20
-        knocked(dir, 600)
-        c = true
+        knocked(dir, 200)
+        new_position = @position + @velocity * dt
       end
 
       dir = (new_position - w.b)
       if dir.magnitude < 20
-        knocked(dir, 600)
-        c = true
+        knocked(dir, 200)
+        new_position = @position + @velocity * dt
       end
-
-      c
     end
 
-    if collisions.none?
-      @position = new_position
-    end
+    @position = new_position
 
     @cooldown -= 1
   end
