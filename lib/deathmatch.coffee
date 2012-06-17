@@ -149,6 +149,7 @@ drawStuff = ->
         ctx.fillStyle = 'rgba(0,0,0,0.4)'
         respawn = Math.round(player.respawn * 10) / 10.0
         ctx.fillText("Respawn in #{respawn}", 400, 300)
+        ctx.fillStyle = 'rgba(200,0,0,0.4)'
         ctx.fillText("Killed by #{player.killer_name}", 400, 350)
 
     ctx.textAlign = 'left'
