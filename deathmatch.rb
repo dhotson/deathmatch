@@ -164,6 +164,7 @@ class Player
 
   MAX_SPEED = 300.0
   ACCELRATION = 80.0
+  DAMPING = 0.96
 
   def initialize
     @@n ||= 0
@@ -192,7 +193,7 @@ class Player
     normal = (wall.b - wall.a).normal
     direction = @velocity.projection(normal) * -2.0
     @velocity += direction
-    @position += @velocity * 0.01
+    @position += @velocity * 0.02
   end
 
   def knocked(direction)
@@ -221,7 +222,7 @@ class Player
   end
 
   def circle
-    Circle.new(@position, 20)
+    Circle.new(@position, 25)
   end
 
   def fire
@@ -244,7 +245,7 @@ class Player
     if @velocity.magnitude > MAX_SPEED
       @velocity = @velocity.normalise * MAX_SPEED
     end
-    @velocity *= 0.96
+    @velocity *= DAMPING
     @position += @velocity * dt
 
     @cooldown -= 1
