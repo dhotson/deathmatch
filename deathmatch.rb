@@ -172,6 +172,9 @@ class Player
     @name = "Player #{@id.to_s}"
     @velocity = Vector.new(rand(50).to_f - 25, rand(50).to_f - 25)
     @cooldown = 0
+    @killer_name = ""
+    @score = 0
+    @consecutive_kills = 0
     spawn
   end
 
@@ -203,7 +206,10 @@ class Player
 
   def die(killer)
     @dead = true
+    @consecutive_kills = 0
     @respawn = 2.to_f
+    @killer_name = killer.name
+    @score  -= 1
     killer.boost
   end
 
@@ -211,6 +217,7 @@ class Player
     return if @dead
     rem = (100.0 - @health)
     @health += rem / 2.0
+    @score  += (@consecutive_kills += 1)
   end
 
   def circle
@@ -251,6 +258,8 @@ class Player
       dead: @dead,
       health: @health,
       respawn: @respawn,
+      killer_name: @killer_name,
+      score: @score,
     }
   end
 end

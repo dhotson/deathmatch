@@ -134,12 +134,20 @@ drawStuff = ->
     ctx.fillText(player.name, player.pos.x, player.pos.y - 30)
 
 
-    if player.you && player.dead
+    if player.you
       ctx.textAlign = 'center'
-      ctx.font = '32px Helvetica, Arial, sans-serif'
+      ctx.font = '12px Helvetica, Arial, sans-serif'
       ctx.fillStyle = 'rgba(0,0,0,0.4)'
-      respawn = Math.round(player.respawn * 10) / 10.0
-      ctx.fillText("Respawn in #{respawn}", 400, 300)
+      ctx.fillText("Score: #{player.score}", 700, 550)
+      if player.dead
+        ctx.textAlign = 'center'
+        ctx.font = '32px Helvetica, Arial, sans-serif'
+        ctx.fillStyle = 'rgba(0,0,0,0.4)'
+        respawn = Math.round(player.respawn * 10) / 10.0
+        ctx.fillText("Respawn in #{respawn}", 400, 300)
+        ctx.fillText("Killed by #{player.killer_name}", 400, 350)
+
+
 
   for wall in world.walls
     ctx.lineWidth = 5
