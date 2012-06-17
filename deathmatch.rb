@@ -45,6 +45,10 @@ class Vector
     other.normalise * self.dot(other.normalise)
   end
 
+  def distance(vector)
+    Math.sqrt((@x - vector.x) ** 2 + (@y - vector.y) ** 2)
+  end
+
   def to_h
     { x: @x, y: @y }
   end
@@ -61,6 +65,7 @@ class World
       Line.new(Vector.new(10, 590), Vector.new(790, 590)),
       Line.new(Vector.new(10, 10), Vector.new(790, 10)),
       Line.new(Vector.new(790, 10), Vector.new(790, 590)),
+      Line.new(Vector.new(100, 100), Vector.new(200, 200)),
       # wall(5, 4, 5, 10),
       # wall(5, 4, 5, 10),
       # wall(5, 4, 5, 10),
@@ -289,14 +294,25 @@ end
 
 class Circle < Struct.new(:position, :radius)
   def collide?(line)
-    a = line.a - position
-    b = line.b - position
-    dr = (b - a).magnitude
-    d = a.x * b.y - b.x * a.y
-    s = ((radius ** 2) * (dr ** 2)) - (d ** 2)
+    ac = position - line.a
+    ab = line.b   - line.a
 
-    return false if s < 0
-    return true
+    ab2  = ab.dot(ab)
+    acab = ac.dot(ab)
+
+    t = acab / ab2
+
+    if t < 0
+      t = 0
+    elsif t > 1
+      t = 1
+    end
+
+    h = ((ab * t) + line.a - position)
+
+    h2 = h.dot(h)
+
+    h2 <= radius * radius
   end
 end
 
