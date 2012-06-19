@@ -4,6 +4,8 @@ Deathmatch
 A multiplayer top down deathmatch game.
 Made in 48 hours at Railscamp 11 on the Gold Coast.
 
+[Screenshot](http://i.imgur.com/AN0y1.png "Screenshot")
+
 Dependencies
 ----
 
