@@ -178,9 +178,9 @@ drawStuff = ->
   for c in Game.drawCallbacks
     c(ctx)
 
-  webkitRequestAnimationFrame(drawStuff)
+  requestAnimationFrame(drawStuff)
 
-webkitRequestAnimationFrame(drawStuff)
+requestAnimationFrame(drawStuff)
 
 ws.onclose = ->
   intervalId = window.setInterval((->
