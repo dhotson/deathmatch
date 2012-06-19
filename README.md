@@ -2,9 +2,18 @@ Deathmatch
 ====
 
 A multiplayer top down deathmatch game.
+Made in 48 hours at Railscamp 11 on the Gold Coast.
 
 Dependencies
 ----
+
+Deathmatch requires Ruby 1.9.
+
+If you're using bundler
+
+    bundle install
+
+Otherwise, install dependencies manually with rubygems
 
     gem install em-websocket
 
@@ -24,7 +33,7 @@ Open in a browser:
     http://127.0.0.1:8000
 
 
-Dev
+Developing Deathmatch
 ----
 
 You'll need guard and coffeescript:
@@ -38,16 +47,16 @@ Use guard to recompile coffeescript:
 Credits
 ----
 
-By Dennis Hotson (@dhotson) and Paul Annesley (@pda)
-with some help from Rich Healey (@richo), Josh Amos (@joshamos) and Michael Morris (@mtcmorris).
+By [Dennis Hotson](https://github.com/dhotson) and [Paul Annesley](https://github.com/pda)
+with help from [Rich Healey](https://github.com/richo), [Josh Amos](https://github.com/joshamos) and [Michael Morris](https://github.com/mtcmorris).
 
 Contributions
 ----
 
 Contributions are welcome. :-)
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
+1. Fork the project
+2. Create a feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
