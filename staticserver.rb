@@ -3,13 +3,11 @@ class StaticHttpServer < EventMachine::Connection
   include EventMachine::HttpServer
 
   def process_http_request
-    puts "Got a request for #{@http_path_info}"
     path = get_path(@http_path_info)
     # Really stupid server, serve up statics
     return not_authorized unless authorized?(path)
 
     file_path = File.expand_path("../#{path}", __FILE__)
-    puts "Trying to serve #{file_path}"
     return not_found unless File.exist?(file_path)
 
     return send_response(file_path)
