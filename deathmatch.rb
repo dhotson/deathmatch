@@ -1,5 +1,7 @@
 require 'em-websocket'
+require 'evma_httpserver'
 require 'json'
+require File.expand_path('./../staticserver.rb', __FILE__)
 
 WIDTH = 800
 HEIGHT = 600
@@ -392,54 +394,57 @@ dt = 1.0 / 60.0
 
 timer = false
 
-EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
+EventMachine.run do
+  EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
 
-  timer ||= EventMachine::PeriodicTimer.new(dt) do
-    $world.tick(dt)
-  end
-
-  crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
-    if not $world.players.map(&:crowned?).any?
-      $world.players.sample.crown! unless $world.players.empty?
+    timer ||= EventMachine::PeriodicTimer.new(dt) do
+      $world.tick(dt)
     end
-  end
 
-  player = $world.new_player
-
-  ws.onopen do
-    EventMachine::PeriodicTimer.new(dt) do
-      ws.send $world.to_json(player)
-    end
-  end
-
-
-  ws.onmessage do |msg|
-    if !player.dead
-      command = JSON.load(msg)
-
-      case command['type']
-      when 'move'
-        keys = command['keys']
-        keys.each do |key|
-          dir = ({
-            'up' => Vector.new(0, -1),
-            'down' => Vector.new(0, 1),
-            'left' => Vector.new(-1, 0),
-            'right' => Vector.new(1, 0),
-          })[key]
-
-          player.move(Vector.new(dir.x, dir.y))
-        end
-      when 'shoot'
-        direction = Vector.new(command['x'], command['y']) - player.position
-        $world.new_rocket(player, direction)
-      when 'name'
-        player.name = command['name']
+    crowner ||= EventMachine::PeriodicTimer.new(dt*100) do
+      if not $world.players.map(&:crowned?).any?
+        $world.players.sample.crown! unless $world.players.empty?
       end
     end
-  end
 
-  ws.onclose do
-    $world.remove_player(player)
+    player = $world.new_player
+
+    ws.onopen do
+      EventMachine::PeriodicTimer.new(dt) do
+        ws.send $world.to_json(player)
+      end
+    end
+
+
+    ws.onmessage do |msg|
+      if !player.dead
+        command = JSON.load(msg)
+
+        case command['type']
+        when 'move'
+          keys = command['keys']
+          keys.each do |key|
+            dir = ({
+              'up' => Vector.new(0, -1),
+              'down' => Vector.new(0, 1),
+              'left' => Vector.new(-1, 0),
+              'right' => Vector.new(1, 0),
+            })[key]
+
+            player.move(Vector.new(dir.x, dir.y))
+          end
+        when 'shoot'
+          direction = Vector.new(command['x'], command['y']) - player.position
+          $world.new_rocket(player, direction)
+        when 'name'
+          player.name = command['name']
+        end
+      end
+    end
+
+    ws.onclose do
+      $world.remove_player(player)
+    end
   end
+  EventMachine.start_server '0.0.0.0', 8000, StaticHttpServer
 end
