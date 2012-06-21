@@ -2,15 +2,26 @@ class StaticHttpServer < EventMachine::Connection
 
   include EventMachine::HttpServer
 
+  attr_reader :routes
+  def initialize(*args)
+    initialize_routes!
+    super(*args)
+  end
+
   def process_http_request
-    path = get_path(@http_path_info)
-    # Really stupid server, serve up statics
-    return not_authorized unless authorized?(path)
+    path = @http_path_info
 
-    file_path = File.expand_path("../#{path}", __FILE__)
-    return not_found unless File.exist?(file_path)
+    return not_found unless routes.include? path
 
-    return send_response(file_path)
+    return send_response(@routes[path])
+  end
+
+  def initialize_routes!
+    # Default route for index
+    @routes = { "/" => "index.html" }
+    Dir["{lib,assets,vendor}/**"].each  do |f|
+      @routes["/#{f}"] = f
+    end
   end
 
 private
@@ -40,14 +51,6 @@ private
   end
 
   # Helpers
-
-  def get_path(path)
-    if path == "/"
-      return "index.html"
-    else
-      return path
-    end
-  end
 
   def authorized?(path)
     path_filters.each {|f| return false if f.call(path)}
