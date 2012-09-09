@@ -17,7 +17,6 @@ html {
   position: absolute;
   top: 15px;
   left: 235px;
-  z-index: 100;
 }
 
 h1 {
@@ -28,7 +27,7 @@ h1 {
   top: 20px;
   left: 20px;
   background: url(dthmtch.png);
-  text-indent: -999px;
+  text-indent: -9999px;
   margin: 0;
 }
 
@@ -37,8 +36,9 @@ h1 {
   left: 20px;
   top: 100px;
   width: 200px;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 12px;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
   text-align: center;
   line-height: 40px;
   background-color: #f3f3f3;
@@ -48,11 +48,18 @@ h1 {
   box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 3px 7px -2px rgba(0,0,0,0.1);
   border-radius: 4px;
   border: 1px solid #ddd;
+  text-shadow: 0 1px 0 #fff;
 }
 
 .classy {
   font-family: Georgia;
   font-style: italic;
+  line-height: 2;
+  font-size: 12px;
+}
+
+.aboutlink {
+  line-height: 2;
 }
 
 .keys {
@@ -81,7 +88,6 @@ h1 {
   -moz-box-shadow: 0 1px 0 rgb(255,255,255) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
   -o-box-shadow: 0 1px 0 rgb(255,255,255) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
-  z-index: 50;
 }
 
 .mouse {
@@ -89,8 +95,84 @@ h1 {
   width: 20px;
   height: 30px;
   background: url(mouse.png);
-  text-indent: -999px;
+  text-indent: -9999px;
   vertical-align: middle;
   margin-right: 4px;
 }
 
+
+#about .group {
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.15s linear;
+}
+
+#about:target .game {
+  -webkit-filter: blur(5px);
+  -webkit-transition: all 0.15s linear;
+}
+
+#about:target .group {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.15s linear;
+}
+
+#about .bg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.85);
+}
+
+#about .modal h2 {
+  display: inline-block;
+  width: 200px;
+  height: 50px;
+  background: url(dthmtch.png);
+  text-indent: -9999px;
+  margin-bottom: 5px;
+}
+
+#about .modal .small {
+  font-size: 18px;
+  margin-top: 5px;
+  line-height: 1;
+}
+
+#about .modal p {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  color: #444;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.7);
+}
+
+#about .modal {
+  position: relative;
+  width: 400px;
+  margin: 45px auto;
+  padding: 10px 30px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #dddddd;
+  -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.7) inset, 0 5px 40px rgba(0,0,0,0.7);
+  -moz-box-shadow:    0 1px 0 rgba(255,255,255,0.7) inset, 0 5px 40px rgba(0,0,0,0.7);
+  -o-box-shadow:      0 1px 0 rgba(255,255,255,0.7) inset, 0 5px 40px rgba(0,0,0,0.7);
+  box-shadow:         0 0 0 1px rgba(255,255,255,0.7) inset, 0 5px 40px rgba(0,0,0,0.7);
+
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#dddddd), to(#eeeeee)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #dddddd, #eeeeee); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image: -moz-linear-gradient(top, #dddddd, #eeeeee); /* Firefox 3.6-15 */
+  background-image: -o-linear-gradient(top, #dddddd, #eeeeee); /* Opera 11.10-12.00 */
+  background-image: linear-gradient(to bottom, #dddddd, #eeeeee); /* Firefox 16+, IE10, Opera 12.50+ */
+
+  border-radius: 4px;
+  border: 1px solid #000;
+}
+
+a {
+  text-decoration: none;
+}

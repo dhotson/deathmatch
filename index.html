@@ -1,27 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="about">
 <head>
-  <title>DTHMT.CH</title>
+  <title>DTHMT.CH - Deathmatch</title>
   <link rel="stylesheet" href="assets/deathmatch.css" type="text/css" />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
   <meta charset="utf-8" />
 </head>
 <body>
-<h1 title="Deathmatch">DTHMT.CH</h1>
-<div class="lesson">
-<p>
-<span class="keys">
-<span class="key w">w</span><br />
-<span class="key a">a</span>
-<span class="key s">s</span>
-<span class="key d">d</span>
-</span>
-to move</p>
-<p><span class="mouse">Mouse</span> to point and shoot</p>
-<p><span class="key">f</span> to fullscreen</p>
-<p class="classy">Go forth and vanquish your foes.</p>
+<div id="about">
+  <div class="game">
+    <h1 title="Deathmatch">DTHMT.CH</h1>
+    <div class="lesson">
+    <p>
+    <span class="keys">
+    <span class="key w">w</span><br />
+    <span class="key a">a</span>
+    <span class="key s">s</span>
+    <span class="key d">d</span>
+    </span>
+    to move</p>
+    <p><span class="mouse">Mouse</span> to point and shoot</p>
+    <p><span class="key">f</span> to toggle fullscreen</p>
+    <p class="classy">Go forth and vanquish your foes!</p>
+    <p class="aboutlink"><a href="#about">About</a></p>
+    </div>
+
+    <canvas id="canvas" width="800" height="600"></canvas>
+  </div>
+
+  <div class="group">
+    <a href="#" class="bg"></a>
+    <div class="modal">
+      <h2>Deathmatch</h2>
+      <p class="small">(Deathmatch)</p>
+      <p>By <a target="_blank" href="http://dhotson.tumblr.com">Dennis&nbsp;Hotson</a>&mdash;with help from <a target="_blank" href="http://paul.annesley.cc/">Paul&nbsp;Annesley</a>, <a target="_blank" href="https://twitter.com/josh_amos">Josh&nbsp;Amos</a>, <a target="_blank" href="https://github.com/richo">Richo&nbsp;Healey</a> and <a target="_blank" href="https://github.com/mtcmorris">Michael&nbsp;Morris</a>.</p>
+      <p>Built at Railscamp 2012 in 48 hours in<br />the Gold Coast Hinterlands.</p>
+      <p>Thank you to <a target="_blank" href="http://99designs.com">99designs</a> for sponsoring the games.</p>
+    </div>
+  </div>
 </div>
 
-<canvas id="canvas" width="800" height="600"></canvas>
 <script src="vendor/raf.js"></script>
 <script src="vendor/bigscreen.min.js"></script>
 <script src="lib/deathmatch.js"></script>
