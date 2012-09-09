@@ -1,4 +1,4 @@
-name = document.cookie || (document.cookie = prompt("Enter name"))
+name = localStorage['name'] || (localStorage['name'] = prompt("Enter name"))
 
 canvas = document.getElementById 'canvas'
 
@@ -6,10 +6,8 @@ canvas = document.getElementById 'canvas'
 #   canvas.width = document.width
 #   canvas.height = document.height
 
-canvas.width = 800 # document.width
-canvas.height = 600 # document.height
-canvas.style.background = '#EEEEEE url(assets/white_brick_wall.png) repeat top left'
-canvas.style.cursor = 'none'
+# canvas.width = 800 # document.width
+# canvas.height = 600 # document.height
 
 ctx = canvas.getContext '2d'
 
@@ -24,8 +22,8 @@ right = false
 
 crosshair = { x: 0, y: 0 }
 window.addEventListener 'mousemove', (event) ->
-  crosshair.x = event.clientX
-  crosshair.y = event.clientY
+  crosshair.x = event.clientX - canvas.offsetLeft
+  crosshair.y = event.clientY - canvas.offsetTop
 
 keyIgnorer = (event) ->
   if event.keyCode in [37..40]
@@ -50,9 +48,14 @@ window.addEventListener 'keyup', (event) ->
 window.addEventListener 'mousedown', (event) ->
   ws.send(JSON.stringify({
     type: 'shoot',
-    x: event.clientX,
-    y: event.clientY,
+    x: event.clientX - canvas.offsetLeft,
+    y: event.clientY - canvas.offsetTop,
   }))
+
+# F to fullscreen
+window.addEventListener 'keydown', (event) ->
+  kc = event.keyCode
+  if kc == 70 and BigScreen.enabled then BigScreen.toggle()
 
 # setInterval((->
 #   keys = []

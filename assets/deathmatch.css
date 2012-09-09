@@ -1,0 +1,96 @@
+html {
+  margin: 0;
+
+  background: #EEEEEE url(white_brick_wall.png) repeat top left;
+
+  /* Text selection is mostly annoying.. */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#canvas {
+  cursor: none;
+  position: absolute;
+  top: 15px;
+  left: 235px;
+  z-index: 100;
+}
+
+h1 {
+  display: block;
+  width: 200px;
+  height: 50px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: url(dthmtch.png);
+  text-indent: -999px;
+  margin: 0;
+}
+
+.lesson {
+  position: absolute;
+  left: 20px;
+  top: 100px;
+  width: 200px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #f3f3f3;
+  -webkit-box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 3px 7px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 3px 7px rgba(0,0,0,0.1);
+  -o-box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 3px 7px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset, 0 3px 7px -2px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.classy {
+  font-family: Georgia;
+  font-style: italic;
+}
+
+.keys {
+  display: inline-block;
+}
+
+.key {
+  display: inline-block;
+  position: relative;
+  margin: 3px 4px 3px 0;
+  text-transform: uppercase;
+  border: 1px solid #aaa;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  vertical-align: center;
+  background-color: #f6f6f6;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f6f6f6), to(#e0e0e0)); /* Safari 4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #e0e0e0); /* Chrome 10+, Safari 5.1+, iOS 5+ */
+  background-image: -moz-linear-gradient(top, #f6f6f6, #e0e0e0); /* Firefox 3.6-15 */
+  background-image: -o-linear-gradient(top, #f6f6f6, #e0e0e0); /* Opera 11.10-12.00 */
+  background-image: linear-gradient(to bottom, #f6f6f6, #e0e0e0); /* Firefox 16+, IE10, Opera 12.50+ */
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 0 rgb(255,255,255) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0 1px 0 rgb(255,255,255) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
+  -o-box-shadow: 0 1px 0 rgb(255,255,255) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.5) inset, 0 1px 0 #CCC, 0 2px 0 #AAA, 0 2px 3px rgba(0,0,0,0.2);
+  z-index: 50;
+}
+
+.mouse {
+  display: inline-block;
+  width: 20px;
+  height: 30px;
+  background: url(mouse.png);
+  text-indent: -999px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+

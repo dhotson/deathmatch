@@ -1,13 +1,29 @@
-<html>
-<head><title></title></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>DTHMT.CH</title>
+  <link rel="stylesheet" href="assets/deathmatch.css" type="text/css" />
+  <meta charset="utf-8" />
+</head>
 <body>
-<style>
-body {
-  margin: 0;
-}
-</style>
-<canvas id="canvas"></canvas>
+<h1 title="Deathmatch">DTHMT.CH</h1>
+<div class="lesson">
+<p>
+<span class="keys">
+<span class="key w">w</span><br />
+<span class="key a">a</span>
+<span class="key s">s</span>
+<span class="key d">d</span>
+</span>
+to move</p>
+<p><span class="mouse">Mouse</span> to point and shoot</p>
+<p><span class="key">f</span> to fullscreen</p>
+<p class="classy">Go forth and vanquish your foes.</p>
+</div>
+
+<canvas id="canvas" width="800" height="600"></canvas>
 <script src="vendor/raf.js"></script>
+<script src="vendor/bigscreen.min.js"></script>
 <script src="lib/deathmatch.js"></script>
 </body>
 
