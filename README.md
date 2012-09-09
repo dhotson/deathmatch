@@ -52,6 +52,11 @@ Credits
 By [Dennis Hotson](https://github.com/dhotson) and [Paul Annesley](https://github.com/pda)
 with help from [Rich Healey](https://github.com/richo), [Josh Amos](https://github.com/joshamos) and [Michael Morris](https://github.com/mtcmorris).
 
+License
+----
+
+MIT
+
 Contributions
 ----
 
