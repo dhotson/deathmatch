@@ -394,6 +394,8 @@ timer = false
 
 EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
 
+  EventMachine.set_quantum 10
+
   timer ||= EventMachine::PeriodicTimer.new(dt) do
     $world.tick(dt)
   end
