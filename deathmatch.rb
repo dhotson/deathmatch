@@ -409,11 +409,20 @@ EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
   player = $world.new_player
 
   ws.onopen do
-    EventMachine::PeriodicTimer.new(dt) do
+    t = EventMachine::PeriodicTimer.new(dt) do
       ws.send $world.to_json(player)
     end
-  end
 
+    ws.onclose do
+      t.cancel
+      $world.remove_player(player)
+    end
+
+    ws.onerror do
+      t.cancel
+      $world.remove_player(player)
+    end
+  end
 
   ws.onmessage do |msg|
     if !player.dead
@@ -439,9 +448,5 @@ EventMachine::WebSocket.start(:host => '0.0.0.0', :port => 8080) do |ws|
         player.name = command['name']
       end
     end
-  end
-
-  ws.onclose do
-    $world.remove_player(player)
   end
 end
