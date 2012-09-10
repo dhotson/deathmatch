@@ -167,6 +167,23 @@ drawStuff = ->
   for wall in world.walls
     ctx.lineWidth = 8
     ctx.lineCap = "round"
+    ctx.strokeStyle = ptrn
+    ctx.beginPath()
+    ctx.moveTo(wall.a.x - 4, wall.a.y + 4)
+    ctx.lineTo(wall.b.x - 4, wall.b.y + 4)
+    ctx.stroke()
+
+  ctx.save()
+  ctx.globalCompositeOperation = 'destination-out'
+  for wall in world.walls
+    ctx.strokeStyle = '#000000'
+    ctx.beginPath()
+    ctx.moveTo(wall.a.x - 0.75, wall.a.y + 0.75)
+    ctx.lineTo(wall.b.x - 0.75, wall.b.y + 0.75)
+    ctx.stroke()
+  ctx.restore()
+
+  for wall in world.walls
     ctx.strokeStyle = '#000000'
     ctx.beginPath()
     ctx.moveTo(wall.a.x, wall.a.y)
@@ -182,6 +199,13 @@ drawStuff = ->
     c(ctx)
 
   requestAnimationFrame(drawStuff)
+
+pattern = new Image()
+pattern.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAECAYAAAC6Jt6KAAAAOElEQVQImZXNIREAIBREwfUgMBg8NahAAyT9IyD4AeDMMztz0N01rChUzCgUDMgfuIiHZwz7A6cDSCsFyi2rN64AAAAASUVORK5CYII="
+
+ptrn = null
+pattern.onload = ->
+  ptrn = ctx.createPattern(pattern, 'repeat');
 
 requestAnimationFrame(drawStuff)
 
