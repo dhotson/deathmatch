@@ -105,7 +105,6 @@ drawStuff = ->
   leaderboard_pos = [650, 40]
 
   for player in players
-
     ctx.fillStyle = if player.dead then 'rgba(255,255,255,0.2)' else '#FFFFFF'
     ctx.strokeStyle = if player.dead then 'rgba(0,0,0,0.2)' else '#000000'
     ctx.lineWidth = 5
@@ -125,7 +124,6 @@ drawStuff = ->
       health = player.health / 100.0
       rem = 1.0 - health
 
-
       startAngle = (rem / 2) * Math.PI * 2
       endAngle = startAngle + (health * Math.PI * 2)
 
@@ -133,10 +131,15 @@ drawStuff = ->
       endAngle -= Math.PI / 2
 
       ctx.lineWidth = 2
+      ctx.save()
       ctx.beginPath()
       ctx.arc(player.pos.x, player.pos.y, 20, startAngle, endAngle)
-      ctx.fill()
+      ctx.closePath();
+      ctx.clip()
+      if window.face
+        ctx.drawImage(window.face, player.pos.x - 20, player.pos.y - 20, 40, 40);
       ctx.stroke()
+      ctx.restore()
 
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
@@ -200,6 +203,48 @@ drawStuff = ->
 
   requestAnimationFrame(drawStuff)
 
+navigator.webkitGetUserMedia {video: true}, (stream) ->
+  video = document.createElement('video')
+  video.autoplay = true
+  video.src = window.webkitURL.createObjectURL(stream)
+  cvs = document.createElement('canvas')
+  cvs2 = document.createElement('canvas')
+  window.face = document.createElement('canvas')
+  face.width = 40
+  face.height = 40
+  cctx = cvs.getContext('2d')
+  cctx2 = cvs2.getContext('2d')
+  fctx = face.getContext('2d')
+
+  document.body.appendChild(video)
+  document.body.appendChild(cvs2)
+  document.body.appendChild(cvs)
+  document.body.appendChild(face)
+
+  update = ->
+    m = 8
+    w = cvs2.width = cvs.width = video.videoWidth / m
+    h = cvs2.height = cvs.height = video.videoHeight / m
+    cctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, w, h);
+    cctx2.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, w, h);
+    detector = ccv.detect_objects({
+      "canvas" : ccv.grayscale(ccv.pre(cvs)),
+      "cascade" : cascade,
+      "interval" : 20,
+      "min_neighbors" : 1,
+      "async" : true,
+      "worker" : 1
+    })
+    detector((data) ->
+      data.forEach((f) ->
+        fctx = face.getContext('2d')
+        fctx.drawImage(cvs2, f.x-2, f.y, f.width+4, f.height+4, 0, 0, 40, 40)
+      )
+    )
+
+  setInterval(update, 1000)
+
+# Wall shadow pattern
 pattern = new Image()
 pattern.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAECAYAAAC6Jt6KAAAAOElEQVQImZXNIREAIBREwfUgMBg8NahAAyT9IyD4AeDMMztz0N01rChUzCgUDMgfuIiHZwz7A6cDSCsFyi2rN64AAAAASUVORK5CYII="
 
